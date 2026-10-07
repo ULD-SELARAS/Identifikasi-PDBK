@@ -1,0 +1,53 @@
+/* Tampilan laporan (pratinjau, PDF & cetak). Lebar 190mm = A4 dikurangi margin 10mm kiri-kanan. */
+.laporan {
+  width: 718px;
+  margin: 0 auto;
+  background: #fff;
+  color: #000;
+  font: 11.5px/1.35 Arial, Helvetica, sans-serif;
+  padding: 0;
+}
+.paper-bg .laporan { box-shadow: 0 2px 12px rgba(0,0,0,0.15); padding: 28px 26px; width: 770px; }
+.laporan * { box-sizing: border-box; }
+.laporan .lap-section { padding-bottom: 6px; }
+.laporan .page-break { page-break-before: always; break-before: page; }
+.laporan .page-break { padding-top: 8px; }
+.laporan h3 { margin: 0; font-size: 12px; font-weight: 700; text-align: center; }
+.laporan .bar-title { background: #d9d9d9; border: 1px solid #000; text-align: center; padding: 3px; font-weight: 700; font-size: 12px; margin-bottom: 10px; }
+
+.laporan .ident { display: flex; justify-content: space-between; gap: 16px; }
+.laporan .ident table { border-collapse: collapse; }
+.laporan .ident td { padding: 1.5px 4px; vertical-align: top; }
+.laporan .ident td.k { width: 120px; white-space: nowrap; }
+.laporan .ident td.s { width: 14px; }
+.laporan .ident img.ttd-mini { height: 34px; vertical-align: middle; }
+.laporan .teknik-box { border: 1px solid #000; padding: 4px 10px; font-family: "Times New Roman", Times, serif; font-size: 12.5px; line-height: 1.3; align-self: flex-start; white-space: nowrap; }
+
+.laporan table.ins { width: 100%; border-collapse: collapse; margin-top: 14px; }
+.laporan table.ins th, .laporan table.ins td { border: 1px solid #000; padding: 3px 5px; vertical-align: middle; }
+.laporan table.ins th { background: #d9d9d9; font-weight: 400; text-align: center; font-size: 11px; }
+.laporan table.ins td.c { text-align: center; }
+.laporan table.ins td.ya-col { background: #ffff00; text-align: center; width: 54px; }
+.laporan table.ins td.kat { text-align: center; width: 92px; font-size: 11px; }
+.laporan table.ins .judul { text-align: center; font-weight: 400; background: #fff; }
+.laporan table.ins .petunjuk td { border-left: 1px solid #000; border-right: 1px solid #000; }
+.laporan table.ins .tot td { font-weight: 400; }
+.laporan table.ins .temuan { height: 52px; vertical-align: top; }
+.laporan table.ins .kes td { height: 34px; }
+
+.laporan table.rekap-lap { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.laporan table.rekap-lap th, .laporan table.rekap-lap td { border: 1px solid #000; padding: 4px 6px; }
+.laporan table.rekap-lap th { background: #d9d9d9; font-weight: 700; }
+.laporan table.rekap-lap td.c { text-align: center; }
+.laporan table.rekap-lap td.hit { font-weight: 700; }
+
+.laporan .kes-box { border: 1px solid #000; margin-top: 12px; }
+.laporan .kes-box .h { text-align: center; padding: 6px; border-bottom: 1px solid #000; font-weight: 700; }
+.laporan .kes-box .b { padding: 8px 10px; text-align: justify; white-space: pre-wrap; min-height: 60px; }
+.laporan .kes-box .dug { padding: 8px 10px; border-bottom: 1px solid #000; }
+
+.laporan .sign { width: 260px; margin: 22px 0 0 auto; text-align: center; page-break-inside: avoid; break-inside: avoid; }
+.laporan .sign .img { height: 80px; display: flex; align-items: center; justify-content: center; }
+.laporan .sign .img img { max-height: 80px; max-width: 220px; }
+.laporan .sign .nama { font-weight: 400; }
+.laporan .sumber { margin-top: 30px; font-size: 11px; font-style: italic; color: #000; }

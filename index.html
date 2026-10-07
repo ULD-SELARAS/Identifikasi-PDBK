@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Identifikasi ABK</title>
+  <meta name="description" content="Instrumen identifikasi anak berkebutuhan khusus dengan skor otomatis, kesimpulan dugaan, tanda tangan, unduh PDF dan simpan ke Google Spreadsheet." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/laporan.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-in">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">ID</span>
+        <div>
+          <h1>Identifikasi Anak Berkebutuhan Khusus</h1>
+          <p class="sub">Ceklis gejala &middot; skor otomatis &middot; kesimpulan dugaan</p>
+        </div>
+      </div>
+      <button class="btn ghost sm" id="btnSetelan" type="button" title="Setelan">⚙ Setelan</button>
+    </div>
+    <nav class="wrap steps" aria-label="Langkah">
+      <a href="#sec-identitas" class="step"><b>1</b> Identitas</a>
+      <a href="#sec-instrumen" class="step"><b>2</b> Ceklis</a>
+      <a href="#sec-ringkasan" class="step"><b>3</b> Kesimpulan</a>
+      <a href="#sec-ttd" class="step"><b>4</b> Tanda tangan</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <!-- 1. IDENTITAS -->
+    <section class="card" id="sec-identitas">
+      <div class="card-head">
+        <h2>1. Identitas Anak</h2>
+        <span class="hint">Kolom bertanda * wajib diisi · <button class="linkbtn" type="button" id="btnContoh">Isi data contoh</button></span>
+      </div>
+      <form id="formIdentitas" class="grid" autocomplete="off" onsubmit="return false">
+        <label class="f col2">Nama *<input name="nama" required placeholder="Nama lengkap peserta didik" /></label>
+        <label class="f">Tempat lahir<input name="tempatLahir" placeholder="mis. Jakarta" /></label>
+        <label class="f">Tanggal lahir<input name="tglLahir" type="date" /></label>
+        <label class="f">Jenis kelamin
+          <select name="jk"><option value="">— pilih —</option><option>Laki-laki</option><option>Perempuan</option></select>
+        </label>
+        <label class="f">Nama sekolah<input name="sekolah" placeholder="mis. SKB 39" /></label>
+        <label class="f">Kelas<input name="kelas" placeholder="mis. VIII" /></label>
+        <label class="f">Program paket <small>(opsional)</small><input name="paket" placeholder="mis. A / B / C" /></label>
+        <label class="f col2">Alamat rumah<textarea name="alamatRumah" rows="2"></textarea></label>
+        <label class="f col2">Alamat sekolah<textarea name="alamatSekolah" rows="2"></textarea></label>
+        <label class="f">Tanggal pemeriksaan *<input name="tanggal" type="date" required /></label>
+        <label class="f">Nama asesor *<input name="asesor" required placeholder="Nama guru / pemeriksa" /></label>
+      </form>
+      <div class="teknik-legend">
+        <b>Kode teknik:</b>
+        <span>1. Observasi</span><span>2. Wawancara</span><span>3. Dokumen</span><span>4. Perintah</span><span>5. Gabungan 1,2,3</span>
+      </div>
+    </section>
+
+    <!-- 2. INSTRUMEN -->
+    <section class="card" id="sec-instrumen">
+      <div class="card-head">
+        <h2>2. Ceklis Gejala</h2>
+        <span class="hint">Pilih <b>Ya</b> bila gejala tampak/diperoleh. Skor = bobot × (Ya=1, Tidak=0). Diduga bila skor ≥ 100.</span>
+      </div>
+      <div class="tabs" id="tabs" role="tablist"></div>
+      <div id="panel"></div>
+    </section>
+
+    <!-- 3. RINGKASAN -->
+    <section class="card" id="sec-ringkasan">
+      <div class="card-head">
+        <h2>3. Kesimpulan</h2>
+      </div>
+      <div class="dugaan-box" id="dugaanBox"></div>
+      <div class="table-scroll">
+        <table class="rekap" id="tabelRekap">
+          <thead><tr><th>Cetak</th><th>Instrumen</th><th>Kelompok</th><th class="num">Skor</th><th>Hasil</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="row-btns">
+        <span class="hint">Instrumen yang dicetak di PDF:</span>
+        <button class="btn ghost sm" type="button" data-pilih="semua">Semua</button>
+        <button class="btn ghost sm" type="button" data-pilih="terisi">Yang diisi (ada “Ya”)</button>
+        <button class="btn ghost sm" type="button" data-pilih="diduga">Hanya yang diduga</button>
+      </div>
+      <label class="f mt">Kesimpulan / catatan pemeriksa
+        <textarea id="kesimpulanNarasi" rows="5" placeholder="Tuliskan kesimpulan dan temuan pemeriksa…"></textarea>
+      </label>
+      <button class="btn ghost sm" type="button" id="btnNarasi">✎ Isi otomatis dari hasil ceklis</button>
+    </section>
+
+    <!-- 4. TANDA TANGAN -->
+    <section class="card" id="sec-ttd">
+      <div class="card-head"><h2>4. Tanda Tangan Pemeriksa</h2></div>
+      <div class="grid">
+        <label class="f">Kota<input id="ttdKota" placeholder="mis. Jakarta" /></label>
+        <label class="f">Tanggal<input id="ttdTanggal" type="date" /></label>
+        <label class="f">Jabatan<input id="ttdJabatan" placeholder="Pemeriksa" /></label>
+        <label class="f">Nama pemeriksa<input id="ttdNama" placeholder="Otomatis dari nama asesor" /></label>
+        <label class="f col2">NIP / keterangan <small>(opsional)</small><input id="ttdNip" placeholder="mis. NIP. 1987…" /></label>
+      </div>
+      <div class="sig-wrap">
+        <div class="sig-pad">
+          <canvas id="sigCanvas" aria-label="Area tanda tangan"></canvas>
+          <span class="sig-ph" id="sigPh">Tanda tangan di sini (jari / mouse / stylus)</span>
+        </div>
+        <div class="sig-actions">
+          <button class="btn ghost sm" type="button" id="sigClear">Hapus</button>
+          <label class="btn ghost sm file-btn">Unggah gambar TTD<input type="file" id="sigUpload" accept="image/*" hidden /></label>
+          <label class="chk"><input type="checkbox" id="sigIngat" /> Ingat tanda tangan di perangkat ini</label>
+        </div>
+      </div>
+    </section>
+
+    <div class="spacer"></div>
+  </main>
+
+  <!-- ACTION BAR -->
+  <div class="actionbar">
+    <div class="wrap actionbar-in">
+      <div class="status" id="status" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" type="button" id="btnBaru">Formulir baru</button>
+        <button class="btn" type="button" id="btnPreview">Pratinjau &amp; Unduh PDF</button>
+        <button class="btn primary" type="button" id="btnSimpan">Simpan ke Spreadsheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PRATINJAU -->
+  <div class="modal" id="modalLaporan" hidden>
+    <div class="modal-box wide">
+      <div class="modal-head">
+        <b>Pratinjau Laporan</b>
+        <div class="actions">
+          <button class="btn ghost sm" type="button" id="btnPrint">Cetak</button>
+          <button class="btn primary sm" type="button" id="btnUnduh">Unduh PDF</button>
+          <button class="btn ghost sm" type="button" data-close>Tutup</button>
+        </div>
+      </div>
+      <div class="modal-body paper-bg">
+        <div id="laporan" class="laporan"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL SETELAN -->
+  <div class="modal" id="modalSetelan" hidden>
+    <div class="modal-box">
+      <div class="modal-head"><b>Setelan</b><button class="btn ghost sm" type="button" data-close>Tutup</button></div>
+      <div class="modal-body">
+        <label class="f">URL Web App Google Apps Script
+          <input id="setUrl" placeholder="https://script.google.com/macros/s/……/exec" />
+        </label>
+        <p class="hint">Diisi sekali saja. Cara membuatnya ada di README (langkah “Hubungkan ke Google Spreadsheet”). Bisa juga ditulis permanen di <code>js/config.js</code>.</p>
+        <label class="chk"><input type="checkbox" id="setPdfDrive" /> Simpan juga file PDF laporan ke Google Drive</label>
+        <label class="chk"><input type="checkbox" id="setSumber" /> Cantumkan catatan screening di bagian bawah laporan</label>
+        <div class="row-btns">
+          <button class="btn sm" type="button" id="btnTesKoneksi">Tes koneksi</button>
+          <button class="btn primary sm" type="button" id="btnSimpanSetelan">Simpan setelan</button>
+        </div>
+        <p class="hint" id="tesHasil"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL KONFIRMASI -->
+  <div class="modal" id="modalKonfirmasi" hidden>
+    <div class="modal-box" role="alertdialog" aria-labelledby="konfirmasiTeks">
+      <div class="modal-body">
+        <p class="confirm-text" id="konfirmasiTeks"></p>
+        <div class="row-btns" style="justify-content:flex-end">
+          <button class="btn ghost sm" type="button" id="konfirmasiBatal">Batal</button>
+          <button class="btn primary sm" type="button" id="konfirmasiOk">Lanjutkan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="js/vendor/html2pdf.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/instrumen.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
