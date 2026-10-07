@@ -498,6 +498,8 @@ table.rekap input[type="checkbox"] { width: 17px; height: 17px; accent-color: va
  *              (tersimpan di browser masing-masing pengguna).
  */
 const CONFIG = {
+  // true = tampilkan tombol "Simpan ke Spreadsheet" & "Setelan" (perlu Google Apps Script)
+  PAKAI_SPREADSHEET: false,
   SCRIPT_URL: "",
   KOTA_DEFAULT: "Jakarta",
   JABATAN_DEFAULT: "Pemeriksa",
@@ -1540,7 +1542,7 @@ INSTRUMEN.forEach((ins) =>
   $("#btnBaru").addEventListener("click", async () => {
     const adaIsi = Object.keys(state.jawaban).length || (state.identitas.nama || "").trim();
     if (adaIsi && !state.tersimpan) {
-      const pesan = CONFIG.ARTIFACT
+      const pesan = CONFIG.ARTIFACT || !CONFIG.PAKAI_SPREADSHEET
         ? "Isian anak ini akan dikosongkan. Pastikan PDF-nya sudah diunduh."
         : "Data anak ini belum disimpan ke spreadsheet dan akan dikosongkan.";
       if (!(await tanya(pesan, "Kosongkan formulir"))) return;
@@ -1581,6 +1583,9 @@ INSTRUMEN.forEach((ins) =>
   /* ---------------- init ---------------- */
   if (CONFIG.ARTIFACT) {
     ["#btnSimpan", "#btnSetelan", "#btnPrint"].forEach((q) => $(q) && ($(q).hidden = true));
+  }
+  if (!CONFIG.PAKAI_SPREADSHEET) {
+    ["#btnSimpan", "#btnSetelan"].forEach((q) => $(q) && ($(q).hidden = true));
   }
   function init() {
     isiIdentitas();
